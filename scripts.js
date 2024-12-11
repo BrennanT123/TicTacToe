@@ -49,10 +49,22 @@ function checkWin(lastPlayer) {
       });
 
     setScoreboard();
-  } else {
-    console.log("No winners yet");
+    return;
+  } 
+  const isTie = game.board.every((cell) => cell !== 0);
+  if (isTie ===true)
+  {
+    console.log("It's a tie!")
+    resetButton.classList.remove('hidden');
+    tiles.forEach((tile) => {
+        tile.removeEventListener("click", playTile);
+      });
+      ties++;
+      setScoreboard();
+
   }
 
+  //gets indexes of the current players markers on the board
   function getIndexes(board, marker) {
     let indexes = [],
       i;
@@ -67,10 +79,11 @@ function checkWin(lastPlayer) {
 // setting up scoreboard
 function setScoreboard()
 {
-const p1Score = document.querySelector(".p1Score");
-const p2Score = document.querySelector(".p2Score");
+
 p1Score.textContent = p1.name+": "+p1.getWin();
 p2Score.textContent = p2.name+": "+p2.getWin();
+tiesScore.textContent = "Ties: " + ties;
+
 }
 
 function playAgain(e)
@@ -90,6 +103,12 @@ let p1Name = prompt("Player 1 Name");
 const p1 = Player(p1Name, "X");
 let p2Name = prompt("Player 2 Name");
 const p2 = Player(p2Name, "O");
+
+const p1Score = document.querySelector(".p1Score");
+const p2Score = document.querySelector(".p2Score");
+const tiesScore = document.querySelector(".ties");
+
+let ties = 0;
 
 setScoreboard();
 
